@@ -6,6 +6,9 @@ import 'components/homeWidgets.dart';
 import 'model/model.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:flutter_redux_dev_tools/flutter_redux_dev_tools.dart';
+import 'package:redux_dev_tools/redux_dev_tools.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -15,13 +18,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final Store<AppState> store = Store<AppState>(
+    final DevToolsStore<AppState> stateStore = DevToolsStore<AppState>(
       appStateReducer,
       initialState: AppState.initialState(),
       middleware: [appStateMiddleware]
     );
     return StoreProvider<AppState>(
-        store: store,
+        store: stateStore,
         child: MaterialApp(
         title: 'Redux Items',
         theme: ThemeData(
@@ -29,7 +32,7 @@ class MyApp extends StatelessWidget {
         ),
         home: StoreBuilder<AppState>(
           onInit: (store) => store.dispatch(GetItemsAction()),
-          builder: (BuildContext context, Store<AppState> store) => MyHomePage(),
+          builder: (BuildContext context, Store<AppState> store) => MyHomePage(stateStore),
           ),
       ),
     );
@@ -37,6 +40,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  DevToolsStore store;
+  MyHomePage(this.store);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +57,10 @@ class MyHomePage extends StatelessWidget {
             RemoveItemsButton(viewModel),
           ],
         ),
+        ),
+        drawer: Container(
+          color: Colors.white,
+          child: ReduxDevTools(store),
         ),
     );
   }
