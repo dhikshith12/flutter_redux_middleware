@@ -21,11 +21,12 @@ class MyApp extends StatelessWidget {
     final DevToolsStore<AppState> stateStore = DevToolsStore<AppState>(
       appStateReducer,
       initialState: AppState.initialState(),
-      middleware: [appStateMiddleware]
+      middleware: appStateMiddleWare(),
     );
     return StoreProvider<AppState>(
         store: stateStore,
         child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Redux Items',
         theme: ThemeData(
           primarySwatch: Colors.blue,

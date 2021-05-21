@@ -25,3 +25,10 @@ class LoadedItemsAction{
   List<Item> items;
   LoadedItemsAction(this.items);
 }
+
+class ItemCompletedAction{
+  final Item item;
+
+  ItemCompletedAction(this.item);
+
+}

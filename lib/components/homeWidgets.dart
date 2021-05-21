@@ -6,11 +6,12 @@ import 'package:reduxtodo/redux/actions.dart';
 
 class ViewModel{
   final AppState store;
+  final Function(Item) onCompleted;
   final Function(String) onAddItem;
   final Function(Item) onRemoveItem;
   final Function() onRemoveItems;
 
-  ViewModel(this.store, this.onAddItem, this.onRemoveItem, this.onRemoveItems);
+  ViewModel(this.store, this.onAddItem, this.onRemoveItem, this.onRemoveItems, this.onCompleted);
   
   factory ViewModel.create(Store<AppState> store){
     _onAddItem(String body){
@@ -22,7 +23,10 @@ class ViewModel{
     _onRemoveItems(){
       store.dispatch(RemoveItemsAction());
     }
-    return ViewModel(store.state,_onAddItem,_onRemoveItem,_onRemoveItems);
+    _onCompleted(Item item){
+      store.dispatch(ItemCompletedAction(item));
+    }
+    return ViewModel(store.state,_onAddItem,_onRemoveItem,_onRemoveItems,_onCompleted);
   }
 
 }
@@ -34,6 +38,12 @@ class ItemListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: model.store.items.map((Item e) => ListTile(
+        leading: Checkbox(
+          value: e.completed,
+          onChanged: (b){
+            model.onCompleted(e);
+          },
+        ),
         title: Text(e.body),
         trailing: IconButton(
           icon: Icon(Icons.delete),
