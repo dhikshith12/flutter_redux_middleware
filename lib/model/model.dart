@@ -12,7 +12,12 @@ class Item{
       body??this.body
     );
   }
-  
+  Item.fromJson(Map json) : body = json['body'], id = json['id'];
+
+  Map toJson() => {
+    'id': id,
+    'body': body 
+  };
 }
 
 class AppState{
@@ -21,5 +26,10 @@ class AppState{
   AppState(this.items);
 
   AppState.initialState(): items = List.unmodifiable(<Item>[]);
+
+  AppState.fromJson(Map json)
+    : items = (json['items'] as List).map((e) => Item.fromJson(e)).toList();
+
+  Map toJson() => {'items': items};
 
 }
