@@ -3,6 +3,10 @@ import 'package:redux/redux.dart';
 import 'package:reduxtodo/model/model.dart';
 import 'package:reduxtodo/redux/actions.dart';
 
+//========ALL HOMEPATE WIDGETS ARE HERE========//
+//EACH WIDGET HAS ACCESS TO SINGLE 
+//VIEWMODEL CLASS AND JUST THAT ONE CLASS NO 
+//SETSTATE AND OTHER B.S. BRILLIANT ARCHITECHURE//
 
 class ViewModel{
   final AppState store;
